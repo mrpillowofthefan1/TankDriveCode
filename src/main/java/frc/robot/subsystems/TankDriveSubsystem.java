@@ -7,10 +7,13 @@ import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.util.function.DoubleSupplier;
 
 public class TankDriveSubsystem extends SubsystemBase {
 
@@ -24,6 +27,7 @@ public class TankDriveSubsystem extends SubsystemBase {
     private final SparkMax sparkrightfollower = new SparkMax(4, SparkLowLevel.MotorType.kBrushless);
     private final SparkClosedLoopController rightcontroller = sparkrightfollower.getClosedLoopController();
     private final SparkClosedLoopController leftcontroller = sparkleftfollower.getClosedLoopController();
+    DifferentialDrive diffDrive = new DifferentialDrive(sparkleftleader, sparkrightleader);
 
 
 
@@ -58,33 +62,13 @@ public class TankDriveSubsystem extends SubsystemBase {
 
 
     }
-    public Command velocity(double velocity) {
-       return run(
-               () -> {
-                   leftcontroller.setReference(velocity, SparkBase.ControlType.kVelocity);
-                   rightcontroller.setReference(velocity, SparkBase.ControlType.kVelocity);
-               });
+    public void translate(DoubleSupplier move, DoubleSupplier turn) {
+         sparkleftleader.set((move.getAsDouble() *-1) + turn.getAsDouble());
+         sparkrightleader.set(move.getAsDouble() + turn.getAsDouble());
     }
-    public Command runMotors(double speed) {
-        return run(
-                () -> {
-                    sparkrightfollower.set(speed);
-                    sparkleftfollower.set(speed);
-                });
+    public Command Translate (DoubleSupplier move, DoubleSupplier turn) {
+         return this.run(() -> translate(move, turn));
     }
-    public Command runRightMotors(double speed) {
-        return run(
-                () -> {
-                    sparkrightfollower.set(speed);
-                });
-    }
-    public Command runLeftMotors(double speed) {
-        return run(
-                () -> {
-                    sparkleftfollower.set(speed);
-                });
-    }
-
 
 
 
