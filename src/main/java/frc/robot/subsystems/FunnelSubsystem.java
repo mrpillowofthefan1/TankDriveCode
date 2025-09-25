@@ -23,7 +23,6 @@ public class FunnelSubsystem extends SubsystemBase {
   private final SparkMax sparky1 = new SparkMax(3, SparkLowLevel.MotorType.kBrushless);
  private final SparkMax sparky2 = new SparkMax(4, SparkLowLevel.MotorType.kBrushless);
  private final SparkClosedLoopController controller = sparky1.getClosedLoopController();
-    PIDController pid = new PIDController(kP, kI, kD);
 
 
     public FunnelSubsystem() {

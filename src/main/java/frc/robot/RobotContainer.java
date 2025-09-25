@@ -22,7 +22,7 @@ import java.util.function.BooleanSupplier;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-    private final FunnelSubsystem funnelSubsystem = new FunnelSubsystem();
+
     private final DifferentialDrive m_robotDrive = new DifferentialDrive(TankDriveSubsystem.sparkleftleader::set, TankDriveSubsystem.sparkrightleader::set);
     private final GenericHID m_stick = new GenericHID(0);
 
@@ -56,12 +56,6 @@ public class RobotContainer {
         new Trigger(m_exampleSubsystem::exampleCondition)
                 .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-        // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-        // cancelling on release.
-        m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-        m_driverController.x().whileTrue(funnelSubsystem.runSpeed(0.15));
-        m_driverController.y().whileTrue(funnelSubsystem.runVelocity(500));
-        funnelSubsystem.setDefaultCommand(funnelSubsystem.runSpeed(0));
         while (-m_stick.getRawAxis(0) !=0 || -m_stick.getRawAxis(1) != 0) {
             m_robotDrive.tankDrive(m_stick.getRawAxis(0), m_stick.getRawAxis(1));
             m_robotDrive.arcadeDrive(-m_stick.getRawAxis(0), m_stick.getRawAxis(1));
