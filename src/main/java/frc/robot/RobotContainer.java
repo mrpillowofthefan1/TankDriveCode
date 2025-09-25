@@ -62,7 +62,11 @@ public class RobotContainer {
         m_driverController.x().whileTrue(funnelSubsystem.runSpeed(0.15));
         m_driverController.y().whileTrue(funnelSubsystem.runVelocity(500));
         funnelSubsystem.setDefaultCommand(funnelSubsystem.runSpeed(0));
-        m_robotDrive.arcadeDrive(-m_stick.getRawAxis(0), m_stick.getRawAxis(1));
+        while (-m_stick.getRawAxis(0) !=0 || -m_stick.getRawAxis(1) != 0) {
+            m_robotDrive.tankDrive(m_stick.getRawAxis(0), m_stick.getRawAxis(1));
+            m_robotDrive.arcadeDrive(-m_stick.getRawAxis(0), m_stick.getRawAxis(1));
+            m_robotDrive.curvatureDrive(-m_stick.getRawAxis(0), m_stick.getRawAxis(1), true);
+        }
 
     }
 
