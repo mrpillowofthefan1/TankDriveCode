@@ -20,7 +20,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
-  private Joystick m_leftStick, m_rightStick;
 
 
 
@@ -88,10 +87,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-      m_leftStick = new Joystick(0);
-      m_rightStick = new Joystick(1);
-      TankDriveSubsystem.sparkleftleader.set(-m_leftStick.getY() + m_rightStick.getX());
-      TankDriveSubsystem.sparkrightleader.set(-m_leftStick.getY() - m_rightStick.getX());
   }
 
   @Override

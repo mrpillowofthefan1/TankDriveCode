@@ -21,8 +21,7 @@ public class TankDriveSubsystem extends SubsystemBase {
 
     private final SparkMax sparkrightfollower = new SparkMax(4, SparkLowLevel.MotorType.kBrushless);
 
-    private final DifferentialDrive m_robotDrive = new DifferentialDrive(sparkleftleader::set, sparkrightleader::set);
-    private final GenericHID m_stick = new GenericHID(0);
+
 
     /**
      * The Singleton instance of this TankDriveSubsystem. Code should use
@@ -53,7 +52,6 @@ public class TankDriveSubsystem extends SubsystemBase {
         SparkMaxConfig configRight = new SparkMaxConfig();
         configRight.smartCurrentLimit(90).idleMode(SparkBaseConfig.IdleMode.kBrake).follow(3).closedLoopRampRate(1.4);
         sparkrightfollower.configure(configRight, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-        m_robotDrive.arcadeDrive(-m_stick.getRawAxis(0), m_stick.getRawAxis(1));
 
 
     }
