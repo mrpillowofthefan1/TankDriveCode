@@ -2,12 +2,14 @@ package frc.robot.subsystems;
 
 
 import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class TankDriveSubsystem extends SubsystemBase {
@@ -20,6 +22,8 @@ public class TankDriveSubsystem extends SubsystemBase {
     public static final SparkMax sparkrightleader = new SparkMax(3, SparkLowLevel.MotorType.kBrushless);
 
     private final SparkMax sparkrightfollower = new SparkMax(4, SparkLowLevel.MotorType.kBrushless);
+    private final SparkClosedLoopController rightcontroller = sparkrightfollower.getClosedLoopController();
+    private final SparkClosedLoopController leftcontroller = sparkleftfollower.getClosedLoopController();
 
 
 
@@ -40,8 +44,7 @@ public class TankDriveSubsystem extends SubsystemBase {
      * Creates a new instance of this TankDriveSubsystem. This constructor
      * is private since this class is a Singleton. Code should use
      * the {@link #getInstance()} method to get the singleton instance.
-     */
-    private TankDriveSubsystem() {
+     */ public TankDriveSubsystem() {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
         //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
@@ -55,6 +58,33 @@ public class TankDriveSubsystem extends SubsystemBase {
 
 
     }
+    public Command velocity(double velocity) {
+       return run(
+               () -> {
+                   leftcontroller.setReference(velocity, SparkBase.ControlType.kVelocity);
+                   rightcontroller.setReference(velocity, SparkBase.ControlType.kVelocity);
+               });
+    }
+    public Command runMotors(double speed) {
+        return run(
+                () -> {
+                    sparkrightfollower.set(speed);
+                    sparkleftfollower.set(speed);
+                });
+    }
+    public Command runRightMotors(double speed) {
+        return run(
+                () -> {
+                    sparkrightfollower.set(speed);
+                });
+    }
+    public Command runLeftMotors(double speed) {
+        return run(
+                () -> {
+                    sparkleftfollower.set(speed);
+                });
+    }
+
 
 
 

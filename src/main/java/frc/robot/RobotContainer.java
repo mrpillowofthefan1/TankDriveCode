@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.*;
@@ -25,6 +26,7 @@ public class RobotContainer {
 
     private final DifferentialDrive m_robotDrive = new DifferentialDrive(TankDriveSubsystem.sparkleftleader::set, TankDriveSubsystem.sparkrightleader::set);
     private final GenericHID m_stick = new GenericHID(0);
+    private final TankDriveSubsystem m_tankDriveSubsystem = new TankDriveSubsystem();
 
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -55,12 +57,14 @@ public class RobotContainer {
         // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
         new Trigger(m_exampleSubsystem::exampleCondition)
                 .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-        while (-m_stick.getRawAxis(0) !=0 || -m_stick.getRawAxis(1) != 0) {
-            m_robotDrive.tankDrive(m_stick.getRawAxis(0), m_stick.getRawAxis(1));
-            m_robotDrive.arcadeDrive(-m_stick.getRawAxis(0), m_stick.getRawAxis(1));
-            m_robotDrive.curvatureDrive(-m_stick.getRawAxis(0), m_stick.getRawAxis(1), true);
+        m_driverController.leftStick().whileTrue(m_tankDriveSubsystem.runMotors(Math.pow(m_driverController.getRawAxis(0), 2)));
+        if (m_driverController.getRightX() > 0) {
+            m_driverController.rightStick().whileTrue(m_tankDriveSubsystem.runRightMotors(Math.pow(m_driverController.getRawAxis(0), 2)));
         }
+        else if (m_driverController.getRightX() < 0) {
+            m_driverController.rightStick().whileTrue(m_tankDriveSubsystem.runRightMotors(Math.pow(m_driverController.getRawAxis(0), 2)));
+        }
+        m_tankDriveSubsystem.setDefaultCommand(m_tankDriveSubsystem.runMotors(0));
 
     }
 
