@@ -27,7 +27,6 @@ public class TankDriveSubsystem extends SubsystemBase {
     private final SparkMax sparkrightfollower = new SparkMax(4, SparkLowLevel.MotorType.kBrushless);
     private final SparkClosedLoopController rightcontroller = sparkrightfollower.getClosedLoopController();
     private final SparkClosedLoopController leftcontroller = sparkleftfollower.getClosedLoopController();
-    DifferentialDrive diffDrive = new DifferentialDrive(sparkleftleader, sparkrightleader);
 
 
 

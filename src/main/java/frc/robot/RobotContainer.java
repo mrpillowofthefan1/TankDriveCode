@@ -24,7 +24,6 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-    private final GenericHID m_stick = new GenericHID(0);
     private final TankDriveSubsystem m_tankDriveSubsystem = new TankDriveSubsystem();
 
 
@@ -58,7 +57,7 @@ public class RobotContainer {
                 .onTrue(new ExampleCommand(m_exampleSubsystem));
         m_tankDriveSubsystem.setDefaultCommand(m_tankDriveSubsystem.Translate(
                 () -> Math.pow(m_driverController.getLeftY(), 2),
-                () -> Math.pow(m_driverController.getLeftY(), 2)
+                () -> Math.pow(m_driverController.getRightX(), 2)
         ));
 
 
