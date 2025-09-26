@@ -1,15 +1,11 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.*;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.FunnelSubsystem;
+import frc.robot.subsystems.HeadButtSubsystem;
 import frc.robot.subsystems.TankDriveSubsystem;
 
 import java.util.function.BooleanSupplier;
@@ -25,6 +21,7 @@ public class RobotContainer {
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
     private final TankDriveSubsystem m_tankDriveSubsystem = new TankDriveSubsystem();
+    private final HeadButtSubsystem m_headbutt = new HeadButtSubsystem();
 
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -55,6 +52,9 @@ public class RobotContainer {
         // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
         new Trigger(m_exampleSubsystem::exampleCondition)
                 .onTrue(new ExampleCommand(m_exampleSubsystem));
+        m_driverController.rightTrigger().whileTrue(m_headbutt.CookedOpponent(-1));
+        m_driverController.rightTrigger().whileTrue(m_headbutt.CookedOpponent(1));
+        m_headbutt.setDefaultCommand(m_headbutt.CookedOpponent(0));
         m_tankDriveSubsystem.setDefaultCommand(m_tankDriveSubsystem.Translate(
                 () -> Math.pow(m_driverController.getLeftY(), 2),
                 () -> Math.pow(m_driverController.getRightX(), 2)
